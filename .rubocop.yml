@@ -24,7 +24,7 @@ Style/Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
-Style/EndOfLine:
+Layout/EndOfLine:
   EnforcedStyle: lf
 
 Layout/AlignHash:
