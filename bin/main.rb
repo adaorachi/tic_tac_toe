@@ -90,8 +90,8 @@ while game.game_on
   if game.winner?(current_player)
     puts "Congratulations message"
     current_player.add_score
-    puts "#{game.board.player1.name.capitalize} has #{game.board.player1.get_score}"
-    puts "#{game.board.player2.name.capitalize} has #{game.board.player2.get_score}"
+    puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
+    puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
   end
 
   if game.winner?(current_player) || game.tied?
