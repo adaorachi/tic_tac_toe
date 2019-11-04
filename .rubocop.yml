@@ -25,7 +25,7 @@ Style/Documentation:
 Style/ClassAndModuleChildren:
   Enabled: false
 Layout/EndOfLine:
-  EnforcedStyle: crlf
+  EnforcedStyle: lf
 
 Layout/AlignHash:
   EnforcedColonStyle: key
