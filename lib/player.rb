@@ -16,4 +16,10 @@ class Player
   def add_score
     @score += 1
   end
+
+  def get_score
+    str = @score.to_s 
+    str += @score > 1 ? ' points' : ' point'
+    str
+  end
 end

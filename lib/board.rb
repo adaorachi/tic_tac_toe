@@ -42,7 +42,10 @@ class Board
   end
 
   def valid?(pos)
-    (1..9).include? pos
+    if (1..9).include? pos
+      return true if [:X, :O].none? { |x| x == @available[pos - 1]}
+    end
+    false
   end
 
   def set_marker(pos, marker)
