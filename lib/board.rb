@@ -43,7 +43,7 @@ class Board
 
   def valid?(pos)
     if (1..9).include? pos
-      return true if %i[X O].none? { |x| x == @available[pos - 1]}
+      return true if %i[X O].none? { |x| x == @available[pos - 1] }
     end
     false
   end

@@ -44,8 +44,8 @@ class Game
 
     str += "Game Rules \n"
     str += "1. The game is played on a grid that\'s 3 squares by 3 squares. \n"
-    str += "2. It is played by two persons and in which one of you will be chosen at random to select a marker (X or O) \
-and also start the game. \n"
+    str += "2. It is played by two persons and in which one of you will be chosen at random to select a marker \
+    (X or O) and also start the game. \n"
     str += "3. If you select X, the next player is O or vice-versa. Players take turns putting their marks in empty \
 squares. \n"
     str += "4. The first player to get 3 of his/her marks in a row (up, down, across, or diagonally) is the winner. \n"
