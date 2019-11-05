@@ -63,38 +63,40 @@ marker2 = marker1 == :X ? :O : :X
 
 game.start_board(player_first, player_second, marker1, marker2)
 
-current_player = player_first == game.board.player1.name ? game.board.player1 : game.board.player2
+player_start = game.play_first(player_first)
 
-puts "#{player_first.capitalize}, your marker is #{current_player.marker}"
+puts "#{player_first.capitalize}, your marker is #{player_start.marker}"
 sleep(2)
-puts "#{player_second.capitalize}, your marker is #{current_player.marker == :X ? :O : :X }"
-puts "#{current_player.name.capitalize} goes first!"
+puts "#{player_second.capitalize}, your marker is #{player_start.marker == :X ? :O : :X }"
+puts "#{player_start.name.capitalize} goes first!"
 puts 'Displaying board...'
 game.sleep_mode
 puts game.draw_board
 while game.game_on
-  puts "#{current_player.name.capitalize} (#{current_player.marker}), choose your position, (1 - 9): "
+  puts "#{player_start.name.capitalize} (#{player_start.marker}), choose your position, (1 - 9): "
   position = gets.chomp.to_i
   until game.board.valid?(position)
     game.sleep_mode
-    puts "Invalid Entry #{current_player.name.capitalize}, re-enter your position: "
+    puts "Invalid Entry #{player_start.name.capitalize}, re-enter your position: "
     position = gets.chomp.to_i
   end
 
-  game.board.set_marker(position, current_player.marker)
+  game.board.set_marker(position, player_start.marker)
   game.sleep_mode
   system('clear')
 
   puts game.draw_board
   puts "\n\n"
-  if game.winner?(current_player)
+  if game.winner?(player_start)
     puts "Congratulations message"
-    current_player.add_score
+    player_start.add_score
     puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
     puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
+  elsif game.tied?
+    puts "Game Over! The game is a tie."
   end
 
-  if game.winner?(current_player) || game.tied?
+  if game.winner?(player_start) || game.tied?
     puts 'Do you want to play again (y/n)'
     replay = gets.chomp.downcase
     until %w[y n].include? replay
@@ -129,5 +131,5 @@ while game.game_on
       game.game_status(true)
     end
   end
-  current_player = current_player.name == game.board.player1.name ? game.board.player2 : game.board.player1
+  player_start = game.switch_player(player_start)
 end

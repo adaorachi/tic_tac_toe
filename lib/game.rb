@@ -7,6 +7,7 @@ class Game
 
   def initialize
     @game_on = true
+    @current_player = nil
   end
 
   def draw_board
@@ -56,6 +57,7 @@ the game ends in a tie. \n"
 
   def start_board(player_first, player_second, marker1, marker2)
     @board = Board.new(player_first, player_second, marker1, marker2)
+
   end
 
   def winner?(player)
@@ -68,5 +70,13 @@ the game ends in a tie. \n"
 
   def game_status(status)
     @game_on = status
+  end
+
+  def play_first(player_first)
+    @current_player = player_first == board.player1.name ? board.player1 : board.player
+  end
+
+  def switch_player(player_start)
+    @current_player = player_start.name == board.player1.name ? board.player2 : board.player1
   end
 end
