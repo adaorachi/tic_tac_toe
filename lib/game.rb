@@ -3,7 +3,7 @@
 require_relative('board.rb')
 
 class Game
-  attr_reader :game_on, :board
+  attr_reader :game_on, :board, :current_player
 
   def initialize
     @game_on = true
@@ -57,7 +57,7 @@ the game ends in a tie. \n"
 
   def start_board(player_first, player_second, marker1, marker2)
     @board = Board.new(player_first, player_second, marker1, marker2)
-
+    @current_player = @board.player1
   end
 
   def winner?(player)
@@ -76,7 +76,7 @@ the game ends in a tie. \n"
     @current_player = player_first == board.player1.name ? board.player1 : board.player
   end
 
-  def switch_player(player_start)
-    @current_player = player_start.name == board.player1.name ? board.player2 : board.player1
+  def switch_player
+    @current_player = @current_player.name == board.player1.name ? board.player2 : board.player1
   end
 end

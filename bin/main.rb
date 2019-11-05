@@ -63,40 +63,38 @@ marker2 = marker1 == :X ? :O : :X
 
 game.start_board(player_first, player_second, marker1, marker2)
 
-player_start = game.play_first(player_first)
-
-puts "#{player_first.capitalize}, your marker is #{player_start.marker}"
+puts "#{player_first.capitalize}, your marker is #{game.current_player.marker}"
 sleep(2)
-puts "#{player_second.capitalize}, your marker is #{player_start.marker == :X ? :O : :X }"
-puts "#{player_start.name.capitalize} goes first!"
+puts "#{player_second.capitalize}, your marker is #{game.current_player.marker == :X ? :O : :X }"
+puts "#{game.current_player.name.capitalize} goes first!"
 puts 'Displaying board...'
 game.sleep_mode
 puts game.draw_board
 while game.game_on
-  puts "#{player_start.name.capitalize} (#{player_start.marker}), choose your position, (1 - 9): "
+  puts "#{game.current_player.name.capitalize} (#{game.current_player.marker}), choose your position, (1 - 9): "
   position = gets.chomp.to_i
   until game.board.valid?(position)
     game.sleep_mode
-    puts "Invalid Entry #{player_start.name.capitalize}, re-enter your position: "
+    puts "Invalid Entry #{game.current_player.name.capitalize}, re-enter your position: "
     position = gets.chomp.to_i
   end
 
-  game.board.set_marker(position, player_start.marker)
+  game.board.set_marker(position, game.current_player.marker)
   game.sleep_mode
   system('clear')
 
   puts game.draw_board
   puts "\n\n"
-  if game.winner?(player_start)
+  if game.winner?(game.current_player)
     puts "Congratulations message"
-    player_start.add_score
-    puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
-    puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
+    game.current_player.add_score
   elsif game.tied?
     puts "Game Over! The game is a tie."
   end
 
-  if game.winner?(player_start) || game.tied?
+  if game.winner?(game.current_player) || game.tied?
+    puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
+    puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
     puts 'Do you want to play again (y/n)'
     replay = gets.chomp.downcase
     until %w[y n].include? replay
@@ -131,5 +129,5 @@ while game.game_on
       game.game_status(true)
     end
   end
-  player_start = game.switch_player(player_start)
+  game.switch_player
 end
