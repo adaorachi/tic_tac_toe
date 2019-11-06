@@ -1,218 +1,133 @@
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
-class Cell
-  attr_accessor :position
-  attr_reader :id
-  attr_accessor :marker
+require_relative('../lib/player.rb')
+require_relative('../lib/board.rb')
+require_relative('../lib/game.rb')
 
-  def initialize(id=nil, position=nil)
-    @id = id
-    @marker = nil
-    @position = position
-  end
+game = Game.new
 
-  def content
-    @marker != nil ? @marker : @id
+puts game.welcome_message
+gets.chomp
+puts "Press a to start the game: \nPress b to see how to play: "
+instruct = gets.chomp.downcase
+until %w[a b].include? instruct
+  game.sleep_mode
+  puts 'Invalid Input!'
+  game.sleep_mode
+  puts "Press a to start the game: \nPress b to see how to play: "
+  instruct = gets.chomp.downcase
+end
+
+if instruct == 'b'
+  until instruct != 'b'
+    puts game.instructions
+    puts "Press b to see how to play: \nPress any other key to start the game: "
+    instruct = gets.chomp.downcase
   end
 end
 
-class Player 
-  attr_accessor :name, :marker
-  def initialize(player = nil)
-    @name = nil
-    @player = player
-    @marker = marker
-  end
+puts "Player 1, Enter your name: "
+player1 = gets.chomp
 
-  def player_name
-    puts "#{@player} Enter your name: "
-    name = gets.chomp
-
-    until name.is_a?(String) && name.length > 1
-      puts "Invalid Entry, name must be more than one character! Please re-enter your name: "
-      name = gets.chomp
-    end
-    @name = name
-
-  end
-
-  def random_player(*args)
-    args.shuffle
-  end
-
-  def player_marker
-    puts "#{@name.capitalize} choose your marker (X or O): "
-    marker = gets.chomp.upcase
-    until %w[X O].include? marker
-      puts "Invalid Entry #{@name.capitalize}, please re-enter your maker: "
-      marker = gets.chomp.upcase
-    end
-    @marker = marker
-  end
+until player1.is_a?(String) && player1.length > 1
+  game.sleep_mode
+  puts "Invalid Entry, name must be more than one character!\nPlayer 1, please re-enter your name: "
+  player1 = gets.chomp
 end
-  
-class Board
-  
-  attr_accessor :cell_grid
-  def initialize
-    reset
-  end
 
-  def draw
-    row = cell_grid[0]
-    puts "#{row[0].content} | #{row[1].content} | #{row[2].content}"
-    puts "---------"
-    row = cell_grid[1]
-    puts "#{row[0].content} | #{row[1].content} | #{row[2].content}"
-    puts "---------"
-    row = cell_grid[2]
-    puts "#{row[0].content} | #{row[1].content} | #{row[2].content}"
-  end
+puts "Player 2, Enter your name: "
+player2 = gets.chomp
 
-  def display_board
+until player2.is_a?(String) && player2.length > 1
+  game.sleep_mode
+  puts "Invalid Entry, name must be more than one character!\nPlayer 2, please re-enter your name: "
+  player2 = gets.chomp
+end
 
-  end
+puts "Hello #{player1.capitalize} and #{player2.capitalize} :)"
 
-  def winning_position(player)
-    row = win_row(player)
-    col = win_column(player)
-    dia = win_diagonal(player)
-    [row, col, dia].any?
-  end
+random = Player.random_player(player1, player2)
+player_first = random[0]
+player_second = random[1]
 
-  def win_row(player)
-      row1 = [@cell_grid[0][0], @cell_grid[0][1], @cell_grid[0][2]].all? {|x| x.marker == player.marker}
-      row2 = [@cell_grid[1][0], @cell_grid[1][1], @cell_grid[1][2]].all? {|x| x.marker == player.marker}
-      row3 = [@cell_grid[2][0], @cell_grid[2][1], @cell_grid[2][2]].all? {|x| x.marker == player.marker}
-      [row1, row2, row3].any?
-  end
+puts "#{player_first.capitalize} choose your marker (X or O): "
+marker1 = gets.chomp.upcase.to_sym
+until [:X, :O].include? marker1
+  game.sleep_mode
+  puts "Invalid Entry #{player_first.capitalize}, please re-enter your marker: "
+  marker1 = gets.chomp.upcase.to_sym
+end
 
-  def win_column(player)
-    col1 = [@cell_grid[0][0], @cell_grid[1][0], @cell_grid[2][0]].all? {|x| x.marker == player.marker}
-    col2 = [@cell_grid[0][1], @cell_grid[1][1], @cell_grid[2][1]].all? {|x| x.marker == player.marker}
-    col3 = [@cell_grid[0][2], @cell_grid[1][2], @cell_grid[2][2]].all? {|x| x.marker == player.marker}
-    [col1, col2, col3].any?
-  end
+marker2 = marker1 == :X ? :O : :X
 
-  def win_diagonal(player)
-    dia1 = [@cell_grid[0][0], @cell_grid[1][1], @cell_grid[2][2]].all? {|x| x.marker == player.marker}
-    dia2 = [@cell_grid[0][2], @cell_grid[1][1], @cell_grid[2][0]].all? {|x| x.marker == player.marker}
-    [dia1, dia2].any?
-  end
+game.start_board(player_first, player_second, marker1, marker2)
 
-  def choose_cell(player)
-    puts "#{player.name.capitalize} choose your position, (1 - 9): "
+puts "#{player_first.capitalize}, your marker is #{game.current_player.marker}"
+sleep(2)
+puts "#{player_second.capitalize}, your marker is #{game.current_player.marker == :X ? :O : :X }"
+puts "#{game.current_player.name.capitalize} goes first!"
+puts 'Displaying board...'
+game.sleep_mode
+puts game.draw_board
+while game.game_on
+  puts "#{game.current_player.name.capitalize} (#{game.current_player.marker}), choose your position, (1 - 9): "
+  position = gets.chomp.to_i
+  until game.board.valid?(position)
+    game.sleep_mode
+    puts "Invalid Entry #{game.current_player.name.capitalize}, re-enter your position: "
     position = gets.chomp.to_i
-    until (1..9).include? position
-      puts "Invalid Entry #{player.name.capitalize}, re-enter your position: "
-      position = gets.chomp.to_i
-    end
-    find_cell = nil
-    @cell_grid.each do |row|
-      find_cell = row.select do |x|
-        x.id == position
-      end
-      find_cell = find_cell.first
-
-      break unless find_cell == nil
-    end
-
-    if find_cell.marker == nil
-      find_cell.marker = player.marker
-    else
-      puts "Cell already taken, please choose another position"
-      choose_cell(player)
-    end
-    
   end
 
-  def reset
-    @cell_grid = []
-    id = 1
-    (0..2).each do |row|
-      current_row = []
-      (0..2).each do |column|
-        current_row.push(Cell.new(id))
-        id += 1
-      end
-      cell_grid.push(current_row)
+  game.board.set_marker(position, game.current_player.marker)
+  game.sleep_mode
+  system('clear')
+
+  puts game.draw_board
+  puts "\n\n"
+  if game.winner?(game.current_player)
+    puts "Congratulations message"
+    game.current_player.add_score
+  elsif game.tied?
+    puts "Game Over! The game is a tie."
+  end
+
+  if game.winner?(game.current_player) || game.tied?
+    puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
+    puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
+    puts 'Do you want to play again (y/n)'
+    replay = gets.chomp.downcase
+    until %w[y n].include? replay
+      game.sleep_mode
+      puts 'Invalid Entry!'
+      puts 'Do you want to play again (y/n)'
+      replay = gets.chomp.downcase
+    end
+
+    if replay == 'n'
+      game.sleep_mode
+      puts "Alright then! Bye #{game.board.player1.name.capitalize} and #{game.board.player2.name.capitalize} :)"
+      game.game_status(false)
+      game.sleep_mode
+    elsif replay == 'y'
+      game.sleep_mode
+      puts "Alright then, replaying game for #{game.board.player1.name.capitalize} and #{game.board.player2.name.capitalize}!"
+      sleep(1)
+      puts '...'
+      sleep(1)
+      puts '...'
+      sleep(1)
+      puts '...'
+      sleep(1)
+
+      system('clear')
+      puts 'Displaying Board...'
+      game.sleep_mode
+
+      game.board.reset
+      puts game.draw_board
+      game.game_status(true)
     end
   end
+  game.switch_player
 end
-
-class Game  
-  attr_accessor :board
-
-  def initialize
-    @board = Board.new
-    @game_on = true
-  end
-  def welcome_message
-    puts "Welcome to Tic Tac Toe \n\n"
-    puts "Press Enter to continue:"
-    gets.chomp
-
-  end
-
-  def game_over(player)
-    if @board.winning_position(player)
-      puts "Congratulations #{player.name.capitalize} wins!"
-      @game_on = false
-    end
-    game_tied = true
-    @board.cell_grid.each do |row|
-      if row.any? { |x| x.marker == nil }
-        game_tied = false
-        break
-      end
-    end
-
-    if game_tied
-      puts "The game is tied."
-      @game_on = false
-    end
-  end
-
-  def game_replay
-  end
-
-  def play
-    welcome_message
-
-    player1 = Player.new('Player 1')
-    player1.player_name
-
-    player2 = Player.new('Player 2')
-    player2.player_name
-
-    puts "\n\nHello #{player1.name.capitalize} and #{player2.name.capitalize}"
-
-    player_first = Player.new()
-    random = player_first.random_player(player1, player2)
-
-    player_first = random[0]
-    player_second = random[1]
-
-    puts "\n\n#{player_first.name.capitalize} goes first!"
-
-    player_first.player_marker
-
-    player_second.marker = player_first.marker == 'X' ? 'O' : 'X'
-
-    puts "\n\n"
-    puts "#{player_first.name.capitalize}, your marker is #{player_first.marker}"
-    puts "#{player_second.name.capitalize}, your marker is #{player_second.marker}"
-
-    player = player_first
-    @board.draw
-    while @game_on
-      @board.choose_cell(player)
-      @board.draw
-      game_over(player)
-      player = player == player_first ? player_second : player_first
-    end
-  end
-end
-
-play = Game.new
-play.play
