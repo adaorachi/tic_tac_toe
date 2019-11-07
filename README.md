@@ -23,8 +23,8 @@ Tic-tac-toe is a game played by two persons. <br>
 * When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.
 
 ## How to play game
-Below is a detailed illustrations on how to play our Tic-Tac_Toe game.
-* The game welcomes you and gives you options to press.
+Below is a detailed illustrations on how to play our Tic-Tac-Toe game.
+* The game welcomes you and gives you options to choose.
 <img src="images/img11.jpg"><br>
 * If you press 'b', you'll be given a detailed instructions on how to play game.
 <img src="images/img22.jpg"><br>
@@ -35,9 +35,9 @@ Below is a detailed illustrations on how to play our Tic-Tac_Toe game.
 * The game takes turns in asking players for their positions and it intuitively places their markers in the right numbered cells in the tic-tac-toe grid board which corresponds to their chosen positions. The available grid board also displays the cells available.
 <img src="images/img55.jpg"><br>
 * The first player to get 3 of his/her marks in a row (up, down, across, or diagonally) is the winner. The game displays a congratulatory message to the winner, displays the scores and ask if the players would want to play again. Enter 'y' to continue or 'n' to end the game.
-<img src="images/img55.jpg"><br>
-* When no player wins and the board is filled, it ends the game and displays a game tie message.
 <img src="images/img66.jpg"><br>
+* When no player wins and the board is filled, it ends the game and displays a game tie message.
+<img src="images/img77.jpg"><br>
 
 
 ## Setup
