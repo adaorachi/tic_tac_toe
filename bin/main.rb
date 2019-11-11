@@ -7,8 +7,11 @@ require_relative('../lib/game.rb')
 
 game = Game.new
 
+game.sleep_mode
 puts game.welcome_message
 gets.chomp
+
+game.sleep_mode
 puts "Press a to start the game: \nPress b to see how to play: "
 instruct = gets.chomp.downcase
 until %w[a b].include? instruct
@@ -22,11 +25,13 @@ end
 if instruct == 'b'
   until instruct != 'b'
     puts game.instructions
+    game.sleep_mode
     puts "Press b to see how to play: \nPress any other key to start the game: "
     instruct = gets.chomp.downcase
   end
 end
 
+game.sleep_mode
 puts "Player 1, Enter your name: "
 player1 = gets.chomp
 
@@ -36,6 +41,7 @@ until player1.is_a?(String) && player1.length > 1
   player1 = gets.chomp
 end
 
+game.sleep_mode
 puts "Player 2, Enter your name: "
 player2 = gets.chomp
 
@@ -45,12 +51,16 @@ until player2.is_a?(String) && player2.length > 1
   player2 = gets.chomp
 end
 
+game.sleep_mode
 puts "Hello #{player1.capitalize} and #{player2.capitalize} :)"
 
 random = Player.random_player(player1, player2)
 player_first = random[0]
 player_second = random[1]
 
+game.sleep_mode
+puts "#{player_first.capitalize} goes first!"
+game.sleep_mode
 puts "#{player_first.capitalize} choose your marker (X or O): "
 marker1 = gets.chomp.upcase.to_sym
 until [:X, :O].include? marker1
@@ -63,14 +73,18 @@ marker2 = marker1 == :X ? :O : :X
 
 game.start_board(player_first, player_second, marker1, marker2)
 
+game.sleep_mode
 puts "#{player_first.capitalize}, your marker is #{game.current_player.marker}"
-sleep(2)
+sleep(0.5)
 puts "#{player_second.capitalize}, your marker is #{game.current_player.marker == :X ? :O : :X }"
-puts "#{game.current_player.name.capitalize} goes first!"
+
+game.sleep_mode
 puts 'Displaying board...'
 game.sleep_mode
 puts game.draw_board
+
 while game.game_on
+  puts "\n\n"
   puts "#{game.current_player.name.capitalize} (#{game.current_player.marker}), choose your position, (1 - 9): "
   position = gets.chomp.to_i
   until game.board.valid?(position)
@@ -80,21 +94,24 @@ while game.game_on
   end
 
   game.board.set_marker(position, game.current_player.marker)
-  game.sleep_mode
+  puts "\n\n"
   system('clear')
 
   puts game.draw_board
-  puts "\n\n"
+  game.sleep_mode
   if game.winner?(game.current_player)
-    puts "Congratulations message"
+    puts "Congratulations #{game.current_player.name.capitalize}!"
     game.current_player.add_score
   elsif game.tied?
     puts "Game Over! The game is a tie."
   end
 
   if game.winner?(game.current_player) || game.tied?
+    game.sleep_mode
     puts "#{game.board.player1.name.capitalize} has #{game.board.player1.total_score}"
     puts "#{game.board.player2.name.capitalize} has #{game.board.player2.total_score}"
+    
+    game.sleep_mode
     puts 'Do you want to play again (y/n)'
     replay = gets.chomp.downcase
     until %w[y n].include? replay
@@ -112,13 +129,11 @@ while game.game_on
     elsif replay == 'y'
       game.sleep_mode
       puts "Alright then, replaying game for #{game.board.player1.name.capitalize} and #{game.board.player2.name.capitalize}!"
-      sleep(1)
+      sleep(0.5)
       puts '...'
-      sleep(1)
+      sleep(0.5)
       puts '...'
-      sleep(1)
-      puts '...'
-      sleep(1)
+      sleep(0.5)
 
       system('clear')
       puts 'Displaying Board...'
