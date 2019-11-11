@@ -46,6 +46,7 @@ class Board
   end
 
   private
+
   def win_row(player)
     row1 = all_equals?([@available[0], @available[1], @available[2]], player.marker)
     row2 = all_equals?([@available[3], @available[4], @available[5]], player.marker)

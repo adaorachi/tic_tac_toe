@@ -255,7 +255,7 @@ RSpec.describe 'Tic_Tac_Toe' do
         game.start_board('Player 1', 'Player 2', :X, :O)
         expect(game.board.valid?(10)).to eql(false)
       end
-      
+
       it 'Check if entry is invalid' do
         game.start_board('Player 1', 'Player 2', :X, :O)
         expect(game.board.valid?('a')).to eql(false)
@@ -304,7 +304,7 @@ RSpec.describe 'Tic_Tac_Toe' do
         game.start_board('Player 1', 'Player 2', :X, :O)
         game.board.set_marker(3, game.board.player1.marker)
         game.board.reset
-        expect(game.board.get_marker(3)).to eql(' ');
+        expect(game.board.get_marker(3)).to eql(' ')
       end
 
       it 'Set marker O to position 9 then reset the board and get_marker return an empty string' do
@@ -313,7 +313,7 @@ RSpec.describe 'Tic_Tac_Toe' do
         game.board.reset
         expect(game.board.get_marker(9)).to eql(' ');
       end
-    end   
+    end
   end
 
   describe 'Player' do
