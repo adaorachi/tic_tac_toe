@@ -186,6 +186,20 @@ RSpec.describe 'Tic_Tac_Toe' do
     end
   end
 
+  describe 'Game' do
+    describe '#switch_player' do
+      it 'Current player start as Player 1 by default' do
+        game.start_board('Player 1', 'Player 2', :X, :O)
+        expect(game.current_player.name).to eql(game.board.player1.name)
+      end
+
+      it 'Change current_player to be the player 2' do
+        game.start_board('Player 1', 'Player 2', :X, :O)
+        game.switch_player
+        expect(game.current_player.name).to eql(game.board.player2.name)
+      end
+    end
+  end
   describe 'Board' do
     describe '#valid?' do
       it 'Check if position 3 is already taken' do
