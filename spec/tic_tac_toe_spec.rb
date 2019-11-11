@@ -311,7 +311,7 @@ RSpec.describe 'Tic_Tac_Toe' do
         game.start_board('Player 1', 'Player 2', :X, :O)
         game.board.set_marker(9, game.board.player2.marker)
         game.board.reset
-        expect(game.board.get_marker(9)).to eql(' ');
+        expect(game.board.get_marker(9)).to eql(' ')
       end
     end
   end
