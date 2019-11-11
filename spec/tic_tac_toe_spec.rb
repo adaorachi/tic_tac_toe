@@ -199,7 +199,34 @@ RSpec.describe 'Tic_Tac_Toe' do
         expect(game.current_player.name).to eql(game.board.player2.name)
       end
     end
+
+    describe '#draw_board' do
+      it 'return a String Class' do
+        game.start_board('Player 1', 'Player 2', :X, :O)
+        expect(game.draw_board.class).to eql(String)
+      end
+    end
+
+    describe '#welcome_message' do
+      it 'return a String Class' do
+        expect(game.welcome_message.class).to eql(String)
+      end
+    end
+
+    describe '#instructions' do
+      it 'return a String Class' do
+        expect(game.instructions.class).to eql(String)
+      end
+    end
+
+    describe '#game_status' do
+      it 'return true for game status while the game is on' do
+        game.game_status(false)
+        expect(game.game_status(false)).to eql(false)
+      end
+    end
   end
+
   describe 'Board' do
     describe '#valid?' do
       it 'Check if position 3 is already taken' do
@@ -285,6 +312,16 @@ RSpec.describe 'Tic_Tac_Toe' do
         game.board.set_marker(9, game.board.player2.marker)
         game.board.reset
         expect(game.board.get_marker(9)).to eql(' ');
+      end
+    end   
+  end
+
+  describe 'Player' do
+    describe '#add_score' do
+      it 'adds 1 point to a player' do
+        game.start_board('Player 1', 'Player 2', :X, :O)
+        game.current_player.add_score
+        expect(game.current_player.score).to eql(1)
       end
     end
   end
