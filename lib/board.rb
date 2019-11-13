@@ -17,30 +17,6 @@ class Board
     [row, col, dia].any?
   end
 
-  def all_equals?(cells, marker)
-    [cells[0], cells[1], cells[2]].all? { |x| x == marker }
-  end
-
-  def win_row(player)
-    row1 = all_equals?([@available[0], @available[1], @available[2]], player.marker)
-    row2 = all_equals?([@available[3], @available[4], @available[5]], player.marker)
-    row3 = all_equals?([@available[6], @available[7], @available[8]], player.marker)
-    [row1, row2, row3].any?
-  end
-
-  def win_column(player)
-    col1 = all_equals?([@available[0], @available[3], @available[6]], player.marker)
-    col2 = all_equals?([@available[1], @available[4], @available[7]], player.marker)
-    col3 = all_equals?([@available[2], @available[5], @available[8]], player.marker)
-    [col1, col2, col3].any?
-  end
-
-  def win_diagonal(player)
-    dia1 = all_equals?([@available[0], @available[4], @available[8]], player.marker)
-    dia2 = all_equals?([@available[2], @available[4], @available[6]], player.marker)
-    [dia1, dia2].any?
-  end
-
   def valid?(pos)
     if (1..9).include? pos
       return true if %i[X O].none? { |x| x == @available[pos - 1] }
@@ -67,5 +43,31 @@ class Board
       cell_grid.push(id.to_s)
       id += 1
     end
+  end
+
+  private
+
+  def win_row(player)
+    row1 = all_equals?([@available[0], @available[1], @available[2]], player.marker)
+    row2 = all_equals?([@available[3], @available[4], @available[5]], player.marker)
+    row3 = all_equals?([@available[6], @available[7], @available[8]], player.marker)
+    [row1, row2, row3].any?
+  end
+
+  def win_column(player)
+    col1 = all_equals?([@available[0], @available[3], @available[6]], player.marker)
+    col2 = all_equals?([@available[1], @available[4], @available[7]], player.marker)
+    col3 = all_equals?([@available[2], @available[5], @available[8]], player.marker)
+    [col1, col2, col3].any?
+  end
+
+  def win_diagonal(player)
+    dia1 = all_equals?([@available[0], @available[4], @available[8]], player.marker)
+    dia2 = all_equals?([@available[2], @available[4], @available[6]], player.marker)
+    [dia1, dia2].any?
+  end
+
+  def all_equals?(cells, marker)
+    [cells[0], cells[1], cells[2]].all? { |x| x == marker }
   end
 end
